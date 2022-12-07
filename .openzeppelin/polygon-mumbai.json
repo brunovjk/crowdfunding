@@ -1,0 +1,226 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0x9b5ae48bf0141fBBef43de272256cBE152407820",
+    "txHash": "0x1b4110771392df405fae75b32e4a84d617ebee213997c32d3e0824607eaeaf71"
+  },
+  "proxies": [
+    {
+      "address": "0xe17CDB4991296d020A961D37C71dD823A19D1720",
+      "txHash": "0x6f17ebb6b988d6ece0821a1b86ab7beba9bafe1de6b88d5ccf446877e5e1af75",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xf8282348df8F9eAef8126D7494c440275DbdEA47",
+      "txHash": "0x19848c9f9e5f5720a863a955a0ee5b2ad52c2f218d3314cdf7715564d8975cce",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xf8805c77De3F1aCD97464eA9Ba66642DD3CEA6B9",
+      "txHash": "0xe61af20bb9864196a8f68d26a4661c82506b2c29f9cacf1fc3225b1b94599c3a",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xD09e45ADC7c62A74f4a9906d1df3f96C9773E8d8",
+      "txHash": "0xee8de53f2a79d0e08d8221684f67fb199bdd2b67e42d83c37146a637592d8c48",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xAdc646d04AF5c1B7D0c75d96E2aBFD68f1f4f375",
+      "txHash": "0x0a1e45d9e8db055fb46bff44bacd47e838f94eba069fbd272c504197c95f8102",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "1e98efc6e2617b365ff6f292e83b3daf2d3b78e4be1580eec96d16b001a8cb50": {
+      "address": "0x2CFA9e186f598A74A5909B53504199F6911b06E9",
+      "txHash": "0x8d150874538427e0bc46414ca908e9fcc0e6217f0eb7b5d724f9c6b582463238",
+      "layout": {
+        "solcVersion": "0.8.9",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:67"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_paused",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_bool",
+            "contract": "PausableUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:29"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "PausableUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\security\\PausableUpgradeable.sol:116"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "token",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_contract(IERC20)779",
+            "contract": "CrowdFundingV1",
+            "src": "contracts\\CrowdFundingV1.sol:38"
+          },
+          {
+            "label": "count",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_uint256",
+            "contract": "CrowdFundingV1",
+            "src": "contracts\\CrowdFundingV1.sol:39"
+          },
+          {
+            "label": "maxDuration",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_uint256",
+            "contract": "CrowdFundingV1",
+            "src": "contracts\\CrowdFundingV1.sol:40"
+          },
+          {
+            "label": "campaigns",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Campaign)799_storage)",
+            "contract": "CrowdFundingV1",
+            "src": "contracts\\CrowdFundingV1.sol:41"
+          },
+          {
+            "label": "pledgedAmount",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+            "contract": "CrowdFundingV1",
+            "src": "contracts\\CrowdFundingV1.sol:42"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IERC20)779": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(uint256 => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Campaign)799_storage)": {
+            "label": "mapping(uint256 => struct CrowdFundingV1.Campaign)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Campaign)799_storage": {
+            "label": "struct CrowdFundingV1.Campaign",
+            "members": [
+              {
+                "label": "creator",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "goal",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "pledged",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "startAt",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "endAt",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "claimed",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "5"
+              }
+            ],
+            "numberOfBytes": "192"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    }
+  }
+}
