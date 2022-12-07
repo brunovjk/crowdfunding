@@ -13,12 +13,12 @@ module.exports = {
     ],
   },
   networks: {
-    hardhat: {
-      forking: {
-        url: process.env.MUMBAI_RPC_URL,
-        blockNumber: 14390000,
-      },
-    },
+    // hardhat: {
+    //   forking: {
+    //     url: process.env.MUMBAI_RPC_URL,
+    //     blockNumber: 14390000,
+    //   },
+    // },
     mumbai: {
       url: process.env.MUMBAI_RPC_URL,
       accounts: [process.env.PRIVATE_KEY],
