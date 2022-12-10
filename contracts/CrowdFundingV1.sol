@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 interface IERC20 {
@@ -16,19 +14,14 @@ interface IERC20 {
 }
 
 /**
- * @title CrowdFunding Smart Contract
+ * @title CrowdFund Smart Contract
  * @author Bruno Rocha
  */
-
 /// @custom:security-contact brunovjk@gmail.com
-contract CrowdFundingV1 is
-    Initializable,
-    PausableUpgradeable,
-    OwnableUpgradeable
-{
+contract CrowdFundingV1 is Initializable {
     struct Campaign {
         address creator;
-        IERC20 token;
+        address token;
         uint256 goal;
         uint256 pledged;
         uint256 startAt;
@@ -36,7 +29,6 @@ contract CrowdFundingV1 is
         bool claimed;
     }
 
-    // IERC20 public immutable token;
     uint256 public count;
     uint256 public maxDuration;
     mapping(uint256 => Campaign) public campaigns;
@@ -45,10 +37,9 @@ contract CrowdFundingV1 is
     event Launch(
         uint256 id,
         address indexed creator,
-        address token,
         uint256 goal,
-        uint32 startAt,
-        uint32 endAt
+        uint256 startAt,
+        uint256 endAt
     );
     event Cancel(uint256 id);
     event Pledge(uint256 indexed id, address indexed caller, uint256 amount);
@@ -63,23 +54,13 @@ contract CrowdFundingV1 is
 
     function initialize(uint256 _maxDuration) public initializer {
         maxDuration = _maxDuration;
-        __Pausable_init();
-        __Ownable_init();
-    }
-
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
     }
 
     function launch(
         uint256 _goal,
-        uint32 _startAt,
-        uint32 _endAt,
-        address _token
+        address _token,
+        uint256 _startAt,
+        uint256 _endAt
     ) external {
         require(
             _startAt >= block.timestamp,
@@ -94,15 +75,15 @@ contract CrowdFundingV1 is
         count += 1;
         campaigns[count] = Campaign({
             creator: msg.sender,
-            token: IERC20(_token),
             goal: _goal,
+            token: _token,
             pledged: 0,
             startAt: _startAt,
             endAt: _endAt,
             claimed: false
         });
 
-        emit Launch(count, msg.sender, _token, _goal, _startAt, _endAt);
+        emit Launch(count, msg.sender, _goal, _startAt, _endAt);
     }
 
     function cancel(uint256 _id) external {
@@ -126,13 +107,13 @@ contract CrowdFundingV1 is
             block.timestamp >= campaign.startAt,
             "Campaign has not Started yet"
         );
-        // require(
-        //     block.timestamp <= campaign.endAt,
-        //     "Campaign has already ended"
-        // );
+        require(
+            block.timestamp <= campaign.endAt,
+            "Campaign has already ended"
+        );
         campaign.pledged += _amount;
         pledgedAmount[_id][msg.sender] += _amount;
-        campaign.token.transferFrom(msg.sender, address(this), _amount);
+        IERC20(campaign.token).transferFrom(msg.sender, address(this), _amount);
 
         emit Pledge(_id, msg.sender, _amount);
     }
@@ -154,7 +135,7 @@ contract CrowdFundingV1 is
 
         campaign.pledged -= _amount;
         pledgedAmount[_id][msg.sender] -= _amount;
-        campaign.token.transfer(msg.sender, _amount);
+        IERC20(campaign.token).transfer(msg.sender, _amount);
 
         emit Unpledge(_id, msg.sender, _amount);
     }
@@ -170,7 +151,7 @@ contract CrowdFundingV1 is
         require(!campaign.claimed, "claimed");
 
         campaign.claimed = true;
-        campaign.token.transfer(campaign.creator, campaign.pledged);
+        IERC20(campaign.token).transfer(campaign.creator, campaign.pledged);
 
         emit Claim(_id);
     }
@@ -185,7 +166,7 @@ contract CrowdFundingV1 is
 
         uint256 bal = pledgedAmount[_id][msg.sender];
         pledgedAmount[_id][msg.sender] = 0;
-        campaign.token.transfer(msg.sender, bal);
+        IERC20(campaign.token).transfer(msg.sender, bal);
 
         emit Refund(_id, msg.sender, bal);
     }

@@ -13,15 +13,20 @@ module.exports = {
     ],
   },
   networks: {
-    // hardhat: {
-    //   forking: {
-    //     url: process.env.MUMBAI_RPC_URL,
-    //     blockNumber: 14390000,
-    //   },
-    // },
     mumbai: {
-      url: process.env.MUMBAI_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY],
+      url: process.env.MUMBAI_RPC_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    //   hardhat: {
+    //     forking: {
+    //       url: process.env.MUMBAI_RPC_URL,
+    //       blockNumber: 14390000,
+    //     },
+    //   },
+    //   mumbai: {
+    //     url: process.env.MUMBAI_RPC_URL,
+    //     accounts: [process.env.PRIVATE_KEY],
+    //   },
   },
 };
