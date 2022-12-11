@@ -9,52 +9,52 @@
 
 ## 💻 Functionality
 
-• Deployment
+1. Deployment
     - `maxDuration` Campaigns maximum duration
     
-• Launch function
+2. Launch function
     - `goal` Campaign funding goal
     - `token` Campaign funding ERC20 token
     - `startAt` Campaign start date (Unix timestamp)
     - `endAt` Campaign end date (Unix timestamp)
     - emits `Launch` event
 
-• Cancel function
+3. Cancel function
     - `id` Campaign Id to cancel
     - Require:
         - Signer is the campaign owner
         - Campaign hasn't started yet
     - emits `Cancel` event
 
-• Pledge function
-    `id` Campaign Id to pledge
-    `amount` Amount to pledge
-    Require:
+4. Pledge function
+    - `id` Campaign Id to pledge
+    - `amount` Amount to pledge
+    - Require:
         - Campaign is happening
-    emits `Pledge` event
+    - emits `Pledge` event
 
-• UnPledge function
-    `id` Campaign Id to unpledge
-    `amount` Amount to unpledge
-    Require:
+5. UnPledge function
+    - `id` Campaign Id to unpledge
+    - `amount` Amount to unpledge
+    - Require:
         - Campaign is happening
         - Signer has enough tokens Pledged to withraw
-    emits `UnPledge` event
+    - emits `UnPledge` event
 
-• Claim function
-    `id` Campaign Id to claim 
-    Require:
+6. Claim function
+    - `id` Campaign Id to claim 
+    - Require:
         - Signer is the campaign owner
         - Campaign has ended
         - Successful campaign
-    emits `Claim` event
+    - emits `Claim` event
 
-• Refund function
-    `id` Campaign Id to refund
-    Require:
+7. Refund function
+    - `id` Campaign Id to refund
+    - Require:
         - Campaign has ended
         - Campaign did not succed
-    emits `Refund` event
+    - emits `Refund` event
 
 ## 💻 Test script
 
@@ -73,7 +73,7 @@ I created a series of tests, but please create a pull request with new tests and
 
 ## 🚀 Installing CrowdFunding
 
-Before you begin, make sureYou have installed `Node.js`
+Before you begin, make sure you have installed `Node.js`
 
 To install CrowdFunding, follow the command:
 
