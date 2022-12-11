@@ -1,4 +1,4 @@
-<h2># Crowd Funding</h2>
+<h1>Crowd Funding Contract</h1>
 
 1. Campaigns have a maximum possible duration.
 2. Funds take the form of an ERC20 token.
@@ -106,6 +106,3 @@ Alternatively, see the GitHub documentation at [how to create a pull request](ht
 ## 📝 License
 
 This project is under license. See the [LICENSE](LICENSE.md) file for more details.
-
-
-[⬆ back to top](#CrowdFunding)<br>
