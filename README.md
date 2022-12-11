@@ -9,31 +9,31 @@
 
 ## 💻 Functionality
 
-1. Deployment
+- Deployment
     - `maxDuration` Campaigns maximum duration
     
-2. Launch function
+- Launch function
     - `goal` Campaign funding goal
     - `token` Campaign funding ERC20 token
     - `startAt` Campaign start date (Unix timestamp)
     - `endAt` Campaign end date (Unix timestamp)
     - emits `Launch` event
 
-3. Cancel function
+- Cancel function
     - `id` Campaign Id to cancel
     - Require:
         - Signer is the campaign owner
         - Campaign hasn't started yet
     - emits `Cancel` event
 
-4. Pledge function
+- Pledge function
     - `id` Campaign Id to pledge
     - `amount` Amount to pledge
     - Require:
         - Campaign is happening
     - emits `Pledge` event
 
-5. UnPledge function
+- UnPledge function
     - `id` Campaign Id to unpledge
     - `amount` Amount to unpledge
     - Require:
@@ -41,7 +41,7 @@
         - Signer has enough tokens Pledged to withraw
     - emits `UnPledge` event
 
-6. Claim function
+- Claim function
     - `id` Campaign Id to claim 
     - Require:
         - Signer is the campaign owner
@@ -49,7 +49,7 @@
         - Successful campaign
     - emits `Claim` event
 
-7. Refund function
+- Refund function
     - `id` Campaign Id to refund
     - Require:
         - Campaign has ended
