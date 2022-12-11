@@ -10,21 +10,21 @@
 ## 💻 Functionality
 
 • Deployment
-    `maxDuration` Campaigns maximum duration
+    - `maxDuration` Campaigns maximum duration
     
 • Launch function
-    `goal` Campaign funding goal
-    `token` Campaign funding ERC20 token
-    `startAt` Campaign start date (Unix timestamp)
-    `endAt` Campaign end date (Unix timestamp)
-    emits `Launch` event
+    - `goal` Campaign funding goal
+    - `token` Campaign funding ERC20 token
+    - `startAt` Campaign start date (Unix timestamp)
+    - `endAt` Campaign end date (Unix timestamp)
+    - emits `Launch` event
 
 • Cancel function
-    `id` Campaign Id to cancel
-    Require:
+    - `id` Campaign Id to cancel
+    - Require:
         - Signer is the campaign owner
         - Campaign hasn't started yet
-    emits `Cancel` event
+    - emits `Cancel` event
 
 • Pledge function
     `id` Campaign Id to pledge
