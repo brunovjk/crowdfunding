@@ -24,7 +24,7 @@
   "impls": {
     "4cff6b9266620d9c36049b8e4874350148b70f3f54440857abe3b5614bbd7e69": {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-      "txHash": "0x1951dcd03ff313aeb73d5ca9c27838a83108f737266683b26d6c4972f088ef1c",
+      "txHash": "0x92580458463af7465b60cc763c6f1b8a6a5145e76ac9b074a8628cd7bc2daff9",
       "layout": {
         "solcVersion": "0.8.9",
         "storage": [
@@ -65,7 +65,7 @@
             "label": "campaigns",
             "offset": 0,
             "slot": "3",
-            "type": "t_mapping(t_uint256,t_struct(Campaign)494_storage)",
+            "type": "t_mapping(t_uint256,t_struct(Campaign)3156_storage)",
             "contract": "CrowdFundingV1",
             "src": "contracts\\CrowdFundingV1.sol:34"
           },
@@ -95,11 +95,11 @@
             "label": "mapping(uint256 => mapping(address => uint256))",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(Campaign)494_storage)": {
+          "t_mapping(t_uint256,t_struct(Campaign)3156_storage)": {
             "label": "mapping(uint256 => struct CrowdFundingV1.Campaign)",
             "numberOfBytes": "32"
           },
-          "t_struct(Campaign)494_storage": {
+          "t_struct(Campaign)3156_storage": {
             "label": "struct CrowdFundingV1.Campaign",
             "members": [
               {
