@@ -9,6 +9,7 @@ describe("CrowdFunding", async function () {
   beforeEach(async () => {
     oneETH = ethers.utils.parseEther("1.0");
     [contractOwner, campaignOwner, user] = await ethers.getSigners();
+    campaignID = 1;
   });
   async function deployCrowdFundingV1() {
     // Deploy CrowdFundingV1 contract
@@ -40,7 +41,7 @@ describe("CrowdFunding", async function () {
     };
   }
 
-  it("=== Successful Campaign ==================================================", async function () {
+  it("=== Successful Campaign ============================================", async function () {
     const { tokenERC20 } = await loadFixture(deployTokenERC20);
     const { crowdfundingv1 } = await loadFixture(deployCrowdFundingV1);
 
@@ -51,9 +52,7 @@ describe("CrowdFunding", async function () {
       user.address
     );
     expect(campaignOwnerTokenbalanceInitialState.toString()).to.be.equal("0");
-    expect(userTokenbalanceInitialState.toString()).to.be.equal(
-      "1000000000000000000"
-    );
+    expect(userTokenbalanceInitialState.toString()).to.be.equal(oneETH);
 
     // Approve crowdfundingv1 contract to spend tokens
     await tokenERC20.connect(user).approve(crowdfundingv1.address, oneETH);
@@ -61,7 +60,7 @@ describe("CrowdFunding", async function () {
       user.address,
       crowdfundingv1.address
     );
-    expect(allowance.toString()).to.be.equal("1000000000000000000");
+    expect(allowance.toString()).to.be.equal(oneETH);
 
     // Create Campaign
     const blockNum = await ethers.provider.getBlockNumber();
@@ -79,26 +78,26 @@ describe("CrowdFunding", async function () {
     await launch.wait(1);
     await mine(100);
 
-    const campaignInitialState = await crowdfundingv1.campaigns(1);
-    expect(campaignInitialState.goal.toString()).to.be.equal(
-      "1000000000000000000"
-    );
+    const campaignInitialState = await crowdfundingv1.campaigns(campaignID);
+    expect(campaignInitialState.goal.toString()).to.be.equal(oneETH);
 
     // Pledged the campaign
-    const pledged = await crowdfundingv1.connect(user).pledge(1, oneETH);
+    const pledged = await crowdfundingv1
+      .connect(user)
+      .pledge(campaignID, oneETH);
     // dApps using the contract can observe state changes in transaction logs
     await expect(pledged).to.emit(crowdfundingv1, "Pledge");
     await pledged.wait(1);
-    const pledgedAmount = (await crowdfundingv1.campaigns(1)).pledged;
-    expect(pledgedAmount.toString()).to.be.equal("1000000000000000000");
+    const pledgedAmount = (await crowdfundingv1.campaigns(campaignID)).pledged;
+    expect(pledgedAmount.toString()).to.be.equal(oneETH);
 
     // Owner claim campaign when successful
     await mine(1000);
-    const claim = await crowdfundingv1.connect(campaignOwner).claim(1);
+    const claim = await crowdfundingv1.connect(campaignOwner).claim(campaignID);
     // dApps using the contract can observe state changes in transaction logs
     await expect(claim).to.emit(crowdfundingv1, "Claim");
     await claim.wait(1);
-    expect((await crowdfundingv1.campaigns(1)).claimed);
+    expect((await crowdfundingv1.campaigns(campaignID)).claimed);
 
     const userTokenbalanceFinalState = await tokenERC20.balanceOf(user.address);
     expect(userTokenbalanceFinalState.toString()).to.be.equal("0");
@@ -106,11 +105,105 @@ describe("CrowdFunding", async function () {
     const campaignOwnerTokenbalanceFinalState = await tokenERC20.balanceOf(
       campaignOwner.address
     );
-    expect(campaignOwnerTokenbalanceFinalState.toString()).to.be.equal(
-      "1000000000000000000"
+    expect(campaignOwnerTokenbalanceFinalState.toString()).to.be.equal(oneETH);
+
+    const campaignFinalState = await crowdfundingv1.campaigns(campaignID);
+    expect(campaignFinalState);
+
+    // ** Create Result Table *********************************
+
+    function State(initialState, finalState) {
+      this.initialState = initialState;
+      this.finalState = finalState;
+    }
+    var testTable = {};
+    testTable.userTokenbalance = new State(
+      userTokenbalanceInitialState.toString(),
+      userTokenbalanceFinalState.toString()
+    );
+    testTable.campaignPledgedAmount = new State(
+      campaignInitialState.pledged.toString(),
+      campaignFinalState.pledged.toString()
+    );
+    testTable.claimed = new State(
+      campaignInitialState.claimed,
+      campaignFinalState.claimed
+    );
+    testTable.campaignOwnerTokenbalance = new State(
+      campaignOwnerTokenbalanceInitialState.toString(),
+      campaignOwnerTokenbalanceFinalState.toString()
     );
 
-    const campaignFinalState = await crowdfundingv1.campaigns(1);
+    console.table(testTable);
+  });
+  it("=== Failed Campaign ================================================", async function () {
+    const { tokenERC20 } = await loadFixture(deployTokenERC20);
+    const { crowdfundingv1 } = await loadFixture(deployCrowdFundingV1);
+
+    const campaignOwnerTokenbalanceInitialState = await tokenERC20.balanceOf(
+      campaignOwner.address
+    );
+    const userTokenbalanceInitialState = await tokenERC20.balanceOf(
+      user.address
+    );
+    expect(campaignOwnerTokenbalanceInitialState.toString()).to.be.equal("0");
+    expect(userTokenbalanceInitialState.toString()).to.be.equal(oneETH);
+
+    // Approve crowdfundingv1 contract to spend tokens
+    await tokenERC20.connect(user).approve(crowdfundingv1.address, oneETH);
+    const allowance = await tokenERC20.allowance(
+      user.address,
+      crowdfundingv1.address
+    );
+    expect(allowance.toString()).to.be.equal(oneETH);
+
+    // Create Campaign
+    const blockNum = await ethers.provider.getBlockNumber();
+    const block = await ethers.provider.getBlock(blockNum);
+    const timestamp = block.timestamp;
+
+    const startAt = ethers.BigNumber.from(timestamp + 50);
+    const endAt = ethers.BigNumber.from(timestamp + 500);
+
+    const launch = await crowdfundingv1
+      .connect(campaignOwner)
+      .launch(oneETH, tokenERC20.address, startAt, endAt);
+    // dApps using the contract can observe state changes in transaction logs
+    await expect(launch).to.emit(crowdfundingv1, "Launch");
+    await launch.wait(1);
+    await mine(100);
+
+    const campaignInitialState = await crowdfundingv1.campaigns(campaignID);
+    expect(campaignInitialState.goal.toString()).to.be.equal(oneETH);
+
+    // Pledged the campaign
+    const pledged = await crowdfundingv1
+      .connect(user)
+      .pledge(1, ethers.utils.parseEther("0.5"));
+    // dApps using the contract can observe state changes in transaction logs
+    await expect(pledged).to.emit(crowdfundingv1, "Pledge");
+    await pledged.wait(1);
+    const pledgedAmount = (await crowdfundingv1.campaigns(campaignID)).pledged;
+    expect(pledgedAmount.toString()).to.be.equal(
+      ethers.utils.parseEther("0.5")
+    );
+
+    // Owner refund campaign when falied
+    await mine(1000);
+    const refund = await crowdfundingv1.connect(user).refund(campaignID);
+    // dApps using the contract can observe state changes in transaction logs
+    await expect(refund).to.emit(crowdfundingv1, "Refund");
+    await refund.wait(1);
+
+    const userTokenbalanceFinalState = await tokenERC20.balanceOf(user.address);
+    expect(userTokenbalanceFinalState.toString()).to.be.equal(oneETH);
+
+    const campaignOwnerTokenbalanceFinalState = await tokenERC20.balanceOf(
+      campaignOwner.address
+    );
+    expect(campaignOwnerTokenbalanceFinalState.toString()).to.be.equal("0");
+
+    const campaignFinalState = await crowdfundingv1.campaigns(campaignID);
     expect(campaignFinalState);
 
     // *****************************************************
@@ -124,7 +217,7 @@ describe("CrowdFunding", async function () {
       userTokenbalanceInitialState.toString(),
       userTokenbalanceFinalState.toString()
     );
-    testTable.pledgedAmount = new State(
+    testTable.campaignPledgedAmount = new State(
       campaignInitialState.pledged.toString(),
       campaignFinalState.pledged.toString()
     );
@@ -137,6 +230,71 @@ describe("CrowdFunding", async function () {
       campaignOwnerTokenbalanceFinalState.toString()
     );
 
+    console.table(testTable);
+  });
+  it("=== Upgrade Contract ==============", async function () {
+    const { tokenERC20 } = await loadFixture(deployTokenERC20);
+    const { crowdfundingv1 } = await loadFixture(deployCrowdFundingV1);
+
+    // Approve crowdfundingv1 contract to spend tokens
+    await tokenERC20.connect(user).approve(crowdfundingv1.address, oneETH);
+    const allowance = await tokenERC20.allowance(
+      user.address,
+      crowdfundingv1.address
+    );
+    expect(allowance.toString()).to.be.equal(oneETH);
+
+    // Create Campaign
+    const blockNum = await ethers.provider.getBlockNumber();
+    const block = await ethers.provider.getBlock(blockNum);
+    const timestamp = block.timestamp;
+
+    const startAt = ethers.BigNumber.from(timestamp + 50);
+    const endAt = ethers.BigNumber.from(timestamp + 500);
+
+    const launch = await crowdfundingv1
+      .connect(campaignOwner)
+      .launch(oneETH, tokenERC20.address, startAt, endAt);
+    // dApps using the contract can observe state changes in transaction logs
+    await expect(launch).to.emit(crowdfundingv1, "Launch");
+    await launch.wait(1);
+    await mine(100);
+
+    const campaignInitialState = await crowdfundingv1.campaigns(campaignID);
+    expect(campaignInitialState.goal.toString()).to.be.equal(oneETH);
+
+    // Pledged the campaign
+    const pledged = await crowdfundingv1
+      .connect(user)
+      .pledge(campaignID, oneETH);
+    // dApps using the contract can observe state changes in transaction logs
+    await expect(pledged).to.emit(crowdfundingv1, "Pledge");
+    await pledged.wait(1);
+    const pledgedAmount = (await crowdfundingv1.campaigns(campaignID)).pledged;
+    expect(pledgedAmount.toString()).to.be.equal(oneETH);
+
+    const userPledgedAmountInitialState = await crowdfundingv1.pledgedAmount(
+      campaignID,
+      user.address
+    );
+
+    // pledgedAmount still after upgrade
+
+    // *****************************************************
+
+    function State(initialState, finalState) {
+      this.initialState = initialState;
+      this.finalState = finalState;
+    }
+    var testTable = {};
+    testTable.campaignID = new State(
+      campaignID.toString(),
+      campaignID.toString()
+    );
+    testTable.userPledgedAmount = new State(
+      userPledgedAmountInitialState.toString(),
+      userPledgedAmountInitialState.toString()
+    );
     console.table(testTable);
   });
 });
