@@ -89,13 +89,12 @@ To monitor the test script, follow these steps:
 npx hardhat test
 ```
 
-### Adjustment and improvements
+
+## 📫 Contributing to CrowdFunding
 
 The project is still under development and the next updates will focus on the following tasks:
 
 - [x] Set ERC20Permit - Remove nedd for approve crowdfundingv1 contract to spend tokens
-
-## 📫 Contributing to CrowdFunding
 
 To contribute to CrowdFunding, follow these steps:
 
