@@ -94,7 +94,7 @@ npx hardhat test
 
 The project is still under development and the next updates will focus on the following tasks:
 
-- [x] Set ERC20Permit - Remove nedd for approve crowdfundingv1 contract to spend tokens
+- [ ] Set ERC20Permit - Remove nedd for approve crowdfundingv1 contract to spend tokens
 
 To contribute to CrowdFunding, follow these steps:
 
