@@ -65,11 +65,12 @@
 I created a series of tests, but please create a request with new tests and changes if you like.
 
 CrowdFunding
+
 ┌───────────────────────────┬───────────────────────┬───────────────────────┐
-│           (index)         │    initialState       │      finalState       │
+│           (index)         │       initialState    │       finalState      │
 ├───────────────────────────┼───────────────────────┼───────────────────────┤
-│      userTokenbalance     │ '1000000000000000000' │          '0'          │
-│   campaignPledgedAmount   │           '0'         │ '1000000000000000000' │
+│     userTokenbalance      │ '1000000000000000000' │          '0'          │
+│   campaignPledgedAmount   │         '0'           │ '1000000000000000000' │
 │         claimed           │          false        │         true          │
 │ campaignOwnerTokenbalance │           '0'         │ '1000000000000000000' │
 └───────────────────────────┴───────────────────────┴───────────────────────┘
