@@ -14,7 +14,7 @@ interface IERC20 {
  * @author Bruno Rocha
  */
 /// @custom:security-contact brunovjk@gmail.com
-contract CrowdFundingV1 is Initializable {
+contract CrowdFundingV2 is Initializable {
     struct Campaign {
         address creator;
         address token;
@@ -50,6 +50,10 @@ contract CrowdFundingV1 is Initializable {
 
     function initialize(uint256 _maxDuration) public initializer {
         maxDuration = _maxDuration;
+    }
+
+    function setMaxDuration(uint256 _newMaxDuration) public {
+        maxDuration = _newMaxDuration;
     }
 
     function launch(

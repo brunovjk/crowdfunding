@@ -10,66 +10,86 @@
 ## 💻 Functionality
 
 - Deployment
-    - `maxDuration` Campaigns maximum duration
-    
+  - `maxDuration` Campaigns maximum duration
 - Launch function
-    - `goal` Campaign funding goal
-    - `token` Campaign funding ERC20 token
-    - `startAt` Campaign start date (Unix timestamp)
-    - `endAt` Campaign end date (Unix timestamp)
-    - emits `Launch` event
+
+  - `goal` Campaign funding goal
+  - `token` Campaign funding ERC20 token
+  - `startAt` Campaign start date (Unix timestamp)
+  - `endAt` Campaign end date (Unix timestamp)
+  - emits `Launch` event
 
 - Cancel function
-    - `id` Campaign Id to cancel
-    - Require:
-        - Signer is the campaign owner
-        - Campaign hasn't started yet
-    - emits `Cancel` event
+
+  - `id` Campaign Id to cancel
+  - Require:
+    - Signer is the campaign owner
+    - Campaign hasn't started yet
+  - emits `Cancel` event
 
 - Pledge function
-    - `id` Campaign Id to pledge
-    - `amount` Amount to pledge
-    - Require:
-        - Campaign is happening
-    - emits `Pledge` event
+
+  - `id` Campaign Id to pledge
+  - `amount` Amount to pledge
+  - Require:
+    - Campaign is happening
+  - emits `Pledge` event
 
 - UnPledge function
-    - `id` Campaign Id to unpledge
-    - `amount` Amount to unpledge
-    - Require:
-        - Campaign is happening
-        - Signer has enough tokens Pledged to withraw
-    - emits `UnPledge` event
+
+  - `id` Campaign Id to unpledge
+  - `amount` Amount to unpledge
+  - Require:
+    - Campaign is happening
+    - Signer has enough tokens Pledged to withraw
+  - emits `UnPledge` event
 
 - Claim function
-    - `id` Campaign Id to claim 
-    - Require:
-        - Signer is the campaign owner
-        - Campaign has ended
-        - Successful campaign
-    - emits `Claim` event
+
+  - `id` Campaign Id to claim
+  - Require:
+    - Signer is the campaign owner
+    - Campaign has ended
+    - Successful campaign
+  - emits `Claim` event
 
 - Refund function
-    - `id` Campaign Id to refund
-    - Require:
-        - Campaign has ended
-        - Campaign did not succed
-    - emits `Refund` event
+  - `id` Campaign Id to refund
+  - Require:
+    - Campaign has ended
+    - Campaign did not succed
+  - emits `Refund` event
 
 ## 💻 Test script
 
 I created a series of tests, but please create a pull request with new tests and changes if you think it's necessary.
 
-    ✔ Should print CrowdFundingV1 contract address
-    ✔ Should print TokenERC20 contract address
-    ✔ Should mint 10000000000000 ERC20
-    ✔ Should approve CrowdFundingV1 to spend users ERC20
-    ✔ Should create a valid Crowd Funding Campaign
-    ✔ Should increase campaign pledged amount after otherAccount pledge
-    ✔ Should not be able to cancel after started
-    ✔ Should decrease campaign pledged amount after otherAccount unpledge
-    ✔ Should not be able to refund if campaign success
-    ✔ Goal met, owner should be able claim ERC20 after endAt
+CrowdFunding
+┌───────────────────────────┬───────────────────────┬───────────────────────┐
+│ (index) │ initialState │ finalState │
+├───────────────────────────┼───────────────────────┼───────────────────────┤
+│ userTokenbalance │ '1000000000000000000' │ '0' │
+│ campaignPledgedAmount │ '0' │ '1000000000000000000' │
+│ claimed │ false │ true │
+│ campaignOwnerTokenbalance │ '0' │ '1000000000000000000' │
+└───────────────────────────┴───────────────────────┴───────────────────────┘
+✔ === Successful Campaign ============================================
+┌───────────────────────────┬───────────────────────┬───────────────────────┐
+│ (index) │ initialState │ finalState │
+├───────────────────────────┼───────────────────────┼───────────────────────┤
+│ userTokenbalance │ '1000000000000000000' │ '1000000000000000000' │
+│ campaignPledgedAmount │ '0' │ '500000000000000000' │
+│ claimed │ false │ false │
+│ campaignOwnerTokenbalance │ '0' │ '0' │
+└───────────────────────────┴───────────────────────┴───────────────────────┘
+✔ === Failed Campaign ================================================
+┌───────────────────┬───────────────────────┬───────────────────────┐
+│ (index) │ initialState │ finalState │
+├───────────────────┼───────────────────────┼───────────────────────┤
+│ maxDuration │ '50400' │ '100800' │
+│ userPledgedAmount │ '1000000000000000000' │ '1000000000000000000' │
+└───────────────────┴───────────────────────┴───────────────────────┘
+✔ === Upgrade Contract ===============================================
 
 ## 🚀 Installing CrowdFunding
 
@@ -91,6 +111,12 @@ To monitor the test script, follow these steps:
 npx hardhat test
 ```
 
+### Adjustment and improvements
+
+The project is still under development and the next updates will focus on the following tasks:
+
+- [x] Set ERC20Permit - Remove nedd for approve crowdfundingv1 contract to spend tokens
+
 ## 📫 Contributing to CrowdFunding
 
 To contribute to CrowdFunding, follow these steps:
@@ -101,7 +127,7 @@ To contribute to CrowdFunding, follow these steps:
 4. Push to original branch: `git push origin CrowdFunding / <local>`
 5. Create the pull request.
 
-Alternatively, see the GitHub documentation at [how to create a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request ).
+Alternatively, see the GitHub documentation at [how to create a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
 ## 📝 License
 

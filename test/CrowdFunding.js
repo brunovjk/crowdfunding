@@ -27,6 +27,20 @@ describe("CrowdFunding", async function () {
       crowdfundingv1,
     };
   }
+  async function deployCrowdFundingV2() {
+    const { crowdfundingv1 } = await loadFixture(deployCrowdFundingV1);
+
+    // Deploy CrowdFundingV2 contract
+    const CrowdFundingV2 = await ethers.getContractFactory("CrowdFundingV2");
+    const crowdfundingv2 = await upgrades.upgradeProxy(
+      crowdfundingv1.address,
+      CrowdFundingV2
+    );
+    await crowdfundingv2.deployed();
+    return {
+      crowdfundingv2,
+    };
+  }
   async function deployTokenERC20() {
     // Deploy TokenERC20 contract
     const TokenERC20 = await ethers.getContractFactory("TokenERC20");
@@ -206,7 +220,7 @@ describe("CrowdFunding", async function () {
     const campaignFinalState = await crowdfundingv1.campaigns(campaignID);
     expect(campaignFinalState);
 
-    // *****************************************************
+    // ** Create Result Table *********************************
 
     function State(initialState, finalState) {
       this.initialState = initialState;
@@ -232,9 +246,10 @@ describe("CrowdFunding", async function () {
 
     console.table(testTable);
   });
-  it("=== Upgrade Contract ==============", async function () {
+  it("=== Upgrade Contract ===============================================", async function () {
     const { tokenERC20 } = await loadFixture(deployTokenERC20);
     const { crowdfundingv1 } = await loadFixture(deployCrowdFundingV1);
+    const { crowdfundingv2 } = await loadFixture(deployCrowdFundingV2);
 
     // Approve crowdfundingv1 contract to spend tokens
     await tokenERC20.connect(user).approve(crowdfundingv1.address, oneETH);
@@ -273,27 +288,41 @@ describe("CrowdFunding", async function () {
     const pledgedAmount = (await crowdfundingv1.campaigns(campaignID)).pledged;
     expect(pledgedAmount.toString()).to.be.equal(oneETH);
 
+    const maxDurationInitialState = await crowdfundingv1.maxDuration();
+
     const userPledgedAmountInitialState = await crowdfundingv1.pledgedAmount(
       campaignID,
       user.address
     );
 
-    // pledgedAmount still after upgrade
+    // Set new maxDuration
+    await crowdfundingv2.setMaxDuration(100800);
+    const maxDurationFinalState = await crowdfundingv2.maxDuration();
+    expect(maxDurationFinalState).to.be.equal(100800);
 
-    // *****************************************************
+    // pledgedAmount still after upgrade
+    const userPledgedAmountFinalState = await crowdfundingv2.pledgedAmount(
+      campaignID,
+      user.address
+    );
+    expect(userPledgedAmountInitialState).to.be.equal(
+      userPledgedAmountFinalState
+    );
+
+    // ** Create Result Table *********************************
 
     function State(initialState, finalState) {
       this.initialState = initialState;
       this.finalState = finalState;
     }
     var testTable = {};
-    testTable.campaignID = new State(
-      campaignID.toString(),
-      campaignID.toString()
+    testTable.maxDuration = new State(
+      maxDurationInitialState.toString(),
+      maxDurationFinalState.toString()
     );
     testTable.userPledgedAmount = new State(
       userPledgedAmountInitialState.toString(),
-      userPledgedAmountInitialState.toString()
+      userPledgedAmountFinalState.toString()
     );
     console.table(testTable);
   });
