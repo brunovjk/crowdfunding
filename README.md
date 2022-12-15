@@ -66,40 +66,39 @@ I created a series of tests, but please create a request with new tests and chan
 
 CrowdFunding
 
+✔ === Successful Campaign ============================================
   <table>
     <thead>
       <tr>
-        <th>words</th>
-        <th>transform to</th>
-        <th>keepUpperCase is false</th>
-        <th>keepUpperCase is true</th>
+        <th>(index)</th>
+        <th>initialState</th>
+        <th>finalState</th>
       </tr>
     </thead>
     <tbody>
         <tr>
-            <td>"XML HTTP request"</td>
-            <td>pascalCase</td>
-            <td><code>XmlHttpRequest</code></td>
-            <td><code>XMLHTTPRequest</code></td>
+            <td>userTokenbalance</td>
+            <td><code>'1000000000000000000'</</code></td>
+            <td><code>'0'</code></td>
         </tr>
         <tr>
-            <td>"new customer ID"</td>
-            <td>camelCase</td>
-            <td><code>newCustomerId</code></td>
-            <td><code>newCustomerID</code></td>
+            <td>campaignPledgedAmount</td>
+            <td><code>'0'</</code></td>
+            <td><code>'1000000000000000000'</code></td>
+        </tr>
+              <tr>
+            <td>claimed</td>
+            <td><code>false</</code></td>
+            <td><code>true</code></td>
+        </tr>
+              <tr>
+            <td>campaignOwnerTokenbalance</td>
+            <td><code>'0'</</code></td>
+            <td><code>'1000000000000000000'</code></td>
         </tr>
     </tbody>
   </table>
 
-┌───────────────────────────┬───────────────────────┬───────────────────────┐
-│           (index)         │       initialState    │       finalState      │
-├───────────────────────────┼───────────────────────┼───────────────────────┤
-│     userTokenbalance      │ '1000000000000000000' │          '0'          │
-│   campaignPledgedAmount   │         '0'           │ '1000000000000000000' │
-│         claimed           │          false        │         true          │
-│ campaignOwnerTokenbalance │           '0'         │ '1000000000000000000' │
-└───────────────────────────┴───────────────────────┴───────────────────────┘
-✔ === Successful Campaign ============================================
 ┌───────────────────────────┬───────────────────────┬───────────────────────┐
 │ (index) │ initialState │ finalState │
 ├───────────────────────────┼───────────────────────┼───────────────────────┤
