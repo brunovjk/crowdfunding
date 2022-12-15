@@ -1,4 +1,4 @@
-<h1>Crowd Funding Contract</h1>
+<h1>Crowdfunding - Campaign Creator Contract</h1>
 
 1. Campaigns have a maximum possible duration.
 2. Funds take the form of an ERC20 token.
