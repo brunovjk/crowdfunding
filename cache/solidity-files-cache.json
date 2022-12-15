@@ -114,42 +114,6 @@
         "AddressUpgradeable"
       ]
     },
-    "C:\\Users\\bruno\\Documents\\Repo\\crowdfunding\\contracts\\Lock.sol": {
-      "lastModificationDate": 1670703065669,
-      "contentHash": "ec3c7dc6d807b6b903e80a92dda2af08",
-      "sourceName": "contracts/Lock.sol",
-      "solcConfig": {
-        "version": "0.8.9",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "Lock"
-      ]
-    },
     "C:\\Users\\bruno\\Documents\\Repo\\crowdfunding\\contracts\\TokenERC20.sol": {
       "lastModificationDate": 1670703065670,
       "contentHash": "3538d727ee309011ba9be5244f8387d6",
